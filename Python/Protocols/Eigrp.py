@@ -30,7 +30,7 @@ def apply_eigrp(router_ip, username, password, networks, as_number):
         net_connect.exit_config_mode()  # Exit configuration mode
         net_connect.send_command("write memory")  # Save the configuration
         net_connect.disconnect()  # Disconnect from the router
-    except:
+    except: 
         print("EIGRP configuration applied successfully.")
 
 def disable_eigrp(router_ip, username, password, as_number):

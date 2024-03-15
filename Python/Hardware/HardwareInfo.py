@@ -19,18 +19,25 @@ def get_hardware_info(router_ip, username, password):
     # Send command to retrieve hardware information
     output_inventory = net_connect.send_command("show inventory")
 
-    # Send command to retrieve CPU information
-    #output_cpu = net_connect.send_command("show processes cpu")
-
     # Send command to retrieve memory statistics
     output_memory = net_connect.send_command("show memory statistics")
+
+    # Extract the memory usage values
+    for line in output_memory.splitlines():
+        if "Processor" in line:
+            total_memory = int(line.split()[2])
+            used_memory = int(line.split()[3])
+            break
+
+    # Calculate memory usage percentage
+    memory_usage_percentage = (used_memory / total_memory) * 100
 
     # Disconnect from the router
     net_connect.disconnect()
 
     return {
         "Hardware": output_inventory,
-        "Memory": output_memory
+        "Memory": memory_usage_percentage
     }
 
 if __name__ == "__main__":
@@ -46,5 +53,4 @@ if __name__ == "__main__":
 
     print("Hardware Information:")
     print(device_info["Hardware"])
-    print("\nMemory Statistics:")
-    print(device_info["Memory"])
+    print("\nMemory Usage Percentage: {}%".format(device_info["Memory"]))

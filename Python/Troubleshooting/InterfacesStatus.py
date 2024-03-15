@@ -7,34 +7,30 @@ def interface_action(router_ip, username, password, interface, action):
         "device_type": "cisco_ios",
         "host": router_ip,
         "username": username,
-        "password": password,
+        "password": password
     }
+
+    # Define the interface configuration commands based on the action
+    if action == "shutdown":
+        config_commands = [f"interface {interface}", "shutdown", "exit"]
+        success_message = f"Interface {interface} has been shut down successfully."
+    elif action == "no shutdown":
+        config_commands = [f"interface {interface}", "no shutdown", "exit"]
+        success_message = f"Interface {interface} has been brought up successfully."
+    else:
+        print("Invalid action! Please use 'shutdown' or 'no shutdown'")
+        return
 
     try:
         # Connect to the router
-        net_connect = ConnectHandler(**router)
-
-        # Enter privilege mode (if required)
-        net_connect.enable()
-
-        # Send the command to shut down or no shut down the specified interface
-        if action == "shutdown":
-            command = f"interface {interface}\nshutdown"
-        elif action == "no shutdown":
-            command = f"interface {interface}\nno shutdown"
-        else:
-            print("Invalid action! Please use 'shutdown' or 'no shutdown'")
-            net_connect.disconnect()
-            return
-
-        output = net_connect.send_config_set(command)
-        print(output)
-
-        # Disconnect from the router
-        net_connect.disconnect()
-
-    except:
-        print("Failed to connect to the router:")
+        with ConnectHandler(**router) as net_connect:
+            # Enter privilege mode (if required)
+            net_connect.enable()
+            # Send the command to shut down or bring up the specified interface
+            output = net_connect.send_config_set(config_commands)
+            print(success_message)
+    except Exception as e:
+        print(f"Failed to connect to the router: {e}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:

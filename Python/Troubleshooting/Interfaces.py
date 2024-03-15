@@ -19,17 +19,15 @@ def get_interface_status(router_ip, username, password):
 
         # Send the command to retrieve interface status
         output = net_connect.send_command("show ip int br")
-        print(output)
-        # Process the output to get the interface status
-        # interface_status = {}
-        # lines = output.strip().split('\n')
-        #  for line in lines:
-        #      values = line.split()
-        #      interface = values[0]
-        #      print("interfaces" + interfaces)
-        #      status = values[1]
-        #      interface_status[interface] = status
-        #      print("interface_status" + interface_status)
+        print("Interface \t Status")
+        interface_status = {}
+        lines = output.strip().split('\n')
+        for line in lines[1:]:  # Skip the header line
+            values = line.split()
+            interface = values[0]
+            status = values[4]
+            interface_status[interface] = status
+            print(f"{interface}\t{status}")
 
         # Disconnect from the router
         net_connect.disconnect()

@@ -124,7 +124,7 @@ router.get('/EIGRP' , async (req,res)=>{
 router.get('/EIGRPdisable' , async (req,res)=>{
     try{
         // Call the function that fetches data from the Python script
-        const {ip , networks , as_number} = req.body
+        const {ip , as_number} = req.body
         const result = await EIGRP(ip , process.env.username , process.env.password , as_number)
         res.json(result) // Return the result JSON response
     }

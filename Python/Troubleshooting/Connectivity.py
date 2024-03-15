@@ -24,12 +24,15 @@ def conn(src_ip, dst_ip, username, password):
         ]
 
         output = net_connect.send_config_set(config_commands)
-        print(output)
+        
+        parsed_output = output.splitlines()
+        success_rate_line = [line.strip() for line in parsed_output if "Success rate" in line][0]
+        print(success_rate_line)
         
         # Disconnect from the router
         net_connect.disconnect()
-    except :
-        print("Pinging was unsuccessfully.")
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
 
 if __name__ == "__main__":
 

@@ -2,13 +2,13 @@ import re
 import argparse
 from netmiko import ConnectHandler
 
-def apply_security_configuration(device_ip, username, password, enable_password):
+def apply_security_configuration(device_ip, username, password):
     # Standard configuration (basic security baseline)
     standard_config = [
-        'no ip http server',
-        'no ip http secure-server',
-        'no ip finger',
-        'no service finger',
+        'ip http server',
+        'ip http secure-server',
+        'ip finger',
+        'service finger',
     ]
 
     try:
@@ -17,8 +17,7 @@ def apply_security_configuration(device_ip, username, password, enable_password)
             'device_type': 'cisco_ios',
             'ip': device_ip,
             'username': username,
-            'password': password,
-            'secret': enable_password,
+            'password': password
         }
         net_connect = ConnectHandler(**device)
 
@@ -28,7 +27,10 @@ def apply_security_configuration(device_ip, username, password, enable_password)
         # Apply standard security configuration
         for config_line in standard_config:
             output = net_connect.send_config_set(config_line)
-            print(output)
+            if re.search('% Invalid input', output):
+                print(f"Failed to configure: {config_line}")
+            else:
+                print(f"Successfully configured: {config_line}")
 
         # Disconnect from the device
         net_connect.disconnect()
@@ -42,9 +44,8 @@ if __name__ == '__main__':
     parser.add_argument('device_ip', type=str, help='IP address of the device')
     parser.add_argument('username', type=str, help='Username for device authentication')
     parser.add_argument('password', type=str, help='Password for device authentication')
-    parser.add_argument('enable_password', type=str, help='Enable password for privileged exec mode')
 
     args = parser.parse_args()
 
     # Apply security configuration to the device
-    apply_security_configuration(args.device_ip, args.username, args.password, args.enable_password)
+    apply_security_configuration(args.device_ip, args.username, args.password)

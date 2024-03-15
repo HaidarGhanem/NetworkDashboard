@@ -1,0 +1,84 @@
+- Hardware (data) :
+    Input : (ip , username , password)
+
+    Output:{ "Hardware Information": {
+            "NAME": "Chassis", DESCR: "Cisco 7206VXR, 6-slot chassis"
+            "PID": CISCO7206VXR      , "VID":    , "SN": 4279256517
+    },
+
+            "Memory Usage Percentage": "14.137909862380123%"
+    }
+============================================================================
+- Connectivity (msg) : 
+    Input : (src_ip , dst_ip , username , password)
+
+    Output : Success rate is 0 percent (0/5)
+             Success rate is 100 percent (5/5)
+============================================================================
+- Interface (msg & data) :
+    Input : (ip , username , password)
+
+    Output : FastEthernet0/0 up
+             FastEthernet1/0 up
+             FastEthernet2/0 up
+============================================================================
+- InterfaceStatus (msg & togglebutton) :
+    Input : (ip , username , password , interface)
+
+    Output : Interface FastEthernet2/0 has been brought up successfully.
+             Interface FastEthernet2/0 has been shut down successfully.
+============================================================================
+- RIP (msg) :
+    Input : (ip , username , password , network )
+
+    Output : RIP configuration applied successfully.
+             RIP configuration disabled successfully.
+============================================================================
+- EIGRP (msg) :
+    Input : (ip , username , password , networks, as_number)
+
+    Output : EIGRP configuration applied successfully.
+             EIGRP configuration disabled successfully.
+============================================================================
+- OSPF (msg) :
+    Input : (ip , username, password, networks, interface, area)
+
+    Output : OSPF configuration disabled successfully.
+             OSPF configuration applied successfully.
+============================================================================
+- DHCP (msg) : 
+    Input : (device, username, password, network, subnet_mask, interfaces)
+
+    Output : DHCP assigned IP for 10.0.0.1 - FastEthernet0/1: 192.168.1.10 with subnet mask 255.255.255.0
+             DHCP assigned IP for 10.0.0.1 - FastEthernet0/1: 192.168.1.20 with subnet mask 255.255.255.0
+             DHCP assigned IP for 10.0.0.1 - GigabitEthernet1/0: 192.168.1.30 with subnet mask 255.255.255.0
+             DHCP assigned IP for 10.0.0.1 - GigabitEthernet1/0: 192.168.1.40 with subnet mask 255.255.255.0
+             DHCP configuration applied successfully on 10.0.0.1
+============================================================================
+- ConfigAudit (data) :
+    Input : (device_ip, username, password)
+
+    Output : "device_ip": "192.168.192.131", "diff_percentage": 50.0
+============================================================================
+- CheckConfig (msg) :
+    Input : (device_ip, username, password)
+
+    Output : 'message': f"No errors found on {device_ip}"
+              error_message = f"Error found on {device_ip}:\n{output}"
+              suggestion_message = "Suggestion: Check the configurations and make necessary changes"
+============================================================================
+- ApplySecurity (msg) :
+    Input : (device_ip, username, password)
+
+    Output : Successfully configured: ip http server
+             Successfully configured: ip http secure-server
+             Successfully configured: ip finger
+             Successfully configured: service finger
+============================================================================
+- Accesses (msg) :
+    Input : (device_ip, username, password, permit_ips, denied_ips)
+
+    Output : Permit configuration for 192.168.3.3 - FAILED
+             Deny configuration for 192.168.3.4 - FAILED
+============================================================================
+

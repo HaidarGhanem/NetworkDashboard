@@ -1,10 +1,13 @@
 require('dotenv').config()
-const data = require('../devices.json')
+// const path = require('../devices.json')
+// const {extractData} = require('../extraction')
 const express= require ('express')
 const router = express.Router()
 
+
 //impporting the board controller
 const {basicGNS , basicInfo , basicInterfaces , basicConnectivity} = require ('../controllers/board')
+const {Configurations} = require('./controllers/troubleshooting')
 
 //-------------------------------------the dashboard functionality-----------------------------------
 
@@ -50,5 +53,18 @@ router.get('/basicConnectivity', async (req,res)=>{
     }
 })
 
+
+//duration configCheck
+router.get('/' , async(req,res)=>{
+    try {
+        // Call the function that fetches data from the Python script
+        const resultConfiguration = await Configurations('192.168.192.131','admin','admin','192.168.1.2','admin','admin','192.168.2.3','admin','admin')
+        res.json(resultConfiguration) // Return the result JSON response
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send("An error occurred") // Return an error response
+    }
+})
 
 module.exports = router
