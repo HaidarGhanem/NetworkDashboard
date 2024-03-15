@@ -1,0 +1,102 @@
+{
+    "R1": {
+      "ip": "192.168.192.131",
+      "mask": "255.255.255.0",
+      "username": "admin",
+      "password": "admin",
+      "enablepass": "admin",
+      "interfaces": {
+        "f0/0": "192.168.192.131",
+        "f1/0": "192.168.1.1",
+        "f2/0": "192.168.2.1"
+      }
+    },
+    "R2": {
+      "ip": "192.168.1.2",
+      "mask": "255.255.255.0",
+      "username": "admin",
+      "password": "admin",
+      "enablepass": "admin",
+      "interfaces": {
+        "f0/0": "192.168.1.2",
+        "f1/0": "10.0.0.254"
+      }
+    },
+    "R3": {
+      "ip": "192.168.2.3",
+      "mask": "255.255.255.0",
+      "username": "admin",
+      "password": "admin",
+      "enablepass": "admin",
+      "interfaces": {
+        "f0/0": "192.168.2.3",
+        "f1/0": "20.0.0.254"
+      }
+    },
+    "SW1":{
+      "interfaces":{
+        "e0/0": "connected with R2",
+        "e1/0": "connected with PC1",
+        "e2/0": "connected with PC2",
+        "e3/0": "connected with PC3"
+      }
+      
+    },
+    "SW2":{
+        "interfaces":{
+          "e0/0": "connected with R3",
+          "e1/0": "connected with PC4",
+          "e2/0": "connected with PC5",
+          "e3/0": "connected with PC6"
+        }
+        
+    },
+    "PC1":{
+        "interfaces":{
+            "e0/0": "connected with SW1"
+        },
+        "ip": "10.0.0.1",
+        "mask": "255.255.255.0",
+        "gateway": "10.0.0.254"
+    },
+    "PC2":{
+        "interfaces":{
+            "e0/0": "connected with SW1"
+        },
+        "ip": "10.0.0.2",
+        "mask": "255.255.255.0",
+        "gateway": "10.0.0.254"
+    },
+    "PC3":{
+        "interfaces":{
+            "e0/0": "connected with SW1"
+        },
+        "ip": "10.0.0.3",
+        "mask": "255.255.255.0",
+        "gateway": "10.0.0.254"
+    },
+    "PC4":{
+        "interfaces":{
+            "e0/0": "connected with SW2"
+        },
+        "ip": "20.0.0.4",
+        "mask": "255.255.255.0",
+        "gateway": "20.0.0.254"
+    },
+    "PC5":{
+        "interfaces":{
+            "e0/0": "connected with SW2"
+        },
+        "ip": "20.0.0.5",
+        "mask": "255.255.255.0",
+        "gateway": "20.0.0.254"
+    },
+    "PC6":{
+        "interfaces":{
+            "e0/0": "connected with SW2"
+        },
+        "ip": "20.0.0.6",
+        "mask": "255.255.255.0",
+        "gateway": "20.0.0.254"
+    }
+  }
