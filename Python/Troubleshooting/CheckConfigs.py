@@ -3,6 +3,7 @@ import json
 import sys
 
 def check_router_config(device_ip, username, password):
+
     device = {
         'device_type': 'cisco_ios',
         'host': device_ip,
@@ -11,13 +12,11 @@ def check_router_config(device_ip, username, password):
     }
     
     try:
-        # Connect to the device
+        
         net_connect = ConnectHandler(**device)
         
-        # Send show running-config command to get the configurations
         output = net_connect.send_command('show running-config')
         
-        # Check for any errors in the configurations and provide suggestions
         if 'error' in output:
             error_message = f"Error found on {device_ip}:\n{output}"
             suggestion_message = "Suggestion: Check the configurations and make necessary changes"
@@ -25,7 +24,6 @@ def check_router_config(device_ip, username, password):
         else:
             return json.dumps({'message': f"No errors found on {device_ip}"})
 
-        # Disconnect from the device
         net_connect.disconnect()
         
     except Exception as e:

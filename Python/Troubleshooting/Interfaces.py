@@ -2,7 +2,7 @@ import sys
 from netmiko import ConnectHandler
 
 def get_interface_status(router_ip, username, password):
-    # Define the router details
+    
     router = {
         "device_type": "cisco_ios",
         "host": router_ip,
@@ -11,25 +11,21 @@ def get_interface_status(router_ip, username, password):
     }
 
     try:
-        # Connect to the router
         net_connect = ConnectHandler(**router)
 
-        # Enter privilege mode (if required)
         net_connect.enable()
 
-        # Send the command to retrieve interface status
         output = net_connect.send_command("show ip int br")
         print("Interface \t Status")
         interface_status = {}
         lines = output.strip().split('\n')
-        for line in lines[1:]:  # Skip the header line
+        for line in lines[1:]:  
             values = line.split()
             interface = values[0]
             status = values[4]
             interface_status[interface] = status
             print(f"{interface}\t{status}")
 
-        # Disconnect from the router
         net_connect.disconnect()
 
     except:

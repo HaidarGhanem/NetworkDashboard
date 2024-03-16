@@ -3,7 +3,7 @@ from netmiko import ConnectHandler
 
 def apply_dhcp_config(device, username, password, network, subnet_mask, interfaces):
     try:
-        # Connect to the device
+        
         device_info = {
             'device_type': 'cisco_ios',
             'host': device,
@@ -25,10 +25,8 @@ def apply_dhcp_config(device, username, password, network, subnet_mask, interfac
                 output = net_connect.send_config_set(config_commands)
                 print(f"DHCP assigned IP for {device} - {intf}: {network}.{ip} with subnet mask {subnet_mask}")
 
-        # Save the configuration
         net_connect.save_config()
 
-        # Disconnect from the device
         net_connect.disconnect()
 
         print(f"DHCP configuration applied successfully on {device}")
@@ -36,9 +34,7 @@ def apply_dhcp_config(device, username, password, network, subnet_mask, interfac
     except Exception as e:
         print(f"Error applying DHCP configuration on {device}: {str(e)}")
 
-# Main entry point
 if __name__ == '__main__':
-    # Parse command-line arguments
     parser = argparse.ArgumentParser(description='DHCP Configuration Script')
     parser.add_argument('network', help='Network for DHCP configuration (e.g., 192.168.1)')
     parser.add_argument('subnet_mask', help='Subnet mask for DHCP pool (e.g., 255.255.255.0)')

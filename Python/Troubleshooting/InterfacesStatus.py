@@ -2,7 +2,7 @@ import sys
 from netmiko import ConnectHandler
 
 def interface_action(router_ip, username, password, interface, action):
-    # Define the router details
+
     router = {
         "device_type": "cisco_ios",
         "host": router_ip,
@@ -10,7 +10,6 @@ def interface_action(router_ip, username, password, interface, action):
         "password": password
     }
 
-    # Define the interface configuration commands based on the action
     if action == "shutdown":
         config_commands = [f"interface {interface}", "shutdown", "exit"]
         success_message = f"Interface {interface} has been shut down successfully."
@@ -22,11 +21,10 @@ def interface_action(router_ip, username, password, interface, action):
         return
 
     try:
-        # Connect to the router
         with ConnectHandler(**router) as net_connect:
-            # Enter privilege mode (if required)
+          
             net_connect.enable()
-            # Send the command to shut down or bring up the specified interface
+           
             output = net_connect.send_config_set(config_commands)
             print(success_message)
     except Exception as e:
@@ -34,7 +32,7 @@ def interface_action(router_ip, username, password, interface, action):
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:
-        print("Insufficient arguments! Usage: python script.py <router_ip> <username> <password> <interface> <action>")
+        print("needed : python script.py <router_ip> <username> <password> <interface> <action>")
         print("Valid actions: 'shutdown' or 'no shutdown'")
         sys.exit(1)
     

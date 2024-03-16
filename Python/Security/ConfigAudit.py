@@ -4,7 +4,7 @@ from netmiko import ConnectHandler
 import json
 
 def compare_security_configuration(device_ip, username, password):
-    # Standard configuration (basic security baseline)
+
     standard_config = [
         'no ip http server',
         'no ip http secure-server',
@@ -13,7 +13,7 @@ def compare_security_configuration(device_ip, username, password):
     ]
 
     try:
-        # Connect to the device
+       
         device = {
             'device_type': 'cisco_ios',
             'ip': device_ip,
@@ -22,18 +22,14 @@ def compare_security_configuration(device_ip, username, password):
         }
         net_connect = ConnectHandler(**device)
 
-        # Enable privileged exec mode
         net_connect.enable()
 
-        # Check the current device configuration
         output = net_connect.send_command('show run')
 
-        # Compare the device configuration with the standard configuration
         matching_lines = sum(config_line in output for config_line in standard_config)
         total_lines = len(standard_config)
         percentage_diff = ((total_lines - matching_lines) / total_lines) * 100
 
-        # Disconnect from the device
         net_connect.disconnect()
 
         result = {
@@ -49,7 +45,6 @@ def compare_security_configuration(device_ip, username, password):
         }
         return json.dumps(result)
 
-# Main entry point
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Compare device configuration with a standard security baseline.')
     parser.add_argument('device_ip', type=str, help='IP address of the device')
@@ -58,8 +53,6 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # Compare security configuration for the device
     diff_percentage = compare_security_configuration(args.device_ip, args.username, args.password)
 
-    # Print the percentage of difference in security configuration
     print(diff_percentage)
