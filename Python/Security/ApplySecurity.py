@@ -1,9 +1,9 @@
 import re
 import argparse
+import json
 from netmiko import ConnectHandler
 
 def apply_security_configuration(device_ip, username, password):
-
     standard_config = [
         'ip http server',
         'ip http secure-server',
@@ -22,17 +22,20 @@ def apply_security_configuration(device_ip, username, password):
 
         net_connect.enable()
 
+        config_results = {}
         for config_line in standard_config:
             output = net_connect.send_config_set(config_line)
             if re.search('% Invalid input', output):
-                print(f"Failed to configure: {config_line}")
+                config_results[config_line] = "Failed to configure"
             else:
-                print(f"Successfully configured: {config_line}")
+                config_results[config_line] = "Successfully configured"
 
         net_connect.disconnect()
 
+        return json.dumps(config_results)
+
     except Exception as e:
-        print(f"Error connecting to {device_ip}: {str(e)}")
+        return json.dumps({"error": f"Error connecting to {device_ip}: {str(e)}"})
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Apply standard security configuration to a device.')
@@ -42,4 +45,5 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    apply_security_configuration(args.device_ip, args.username, args.password)
+    result = apply_security_configuration(args.device_ip, args.username, args.password)
+    print(result) 

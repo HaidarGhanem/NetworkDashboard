@@ -1,9 +1,9 @@
 import argparse
+import json
 from netmiko import ConnectHandler
 
 def apply_dhcp_config(device, username, password, network, subnet_mask, interfaces):
     try:
-        
         device_info = {
             'device_type': 'cisco_ios',
             'host': device,
@@ -26,13 +26,14 @@ def apply_dhcp_config(device, username, password, network, subnet_mask, interfac
                 print(f"DHCP assigned IP for {device} - {intf}: {network}.{ip} with subnet mask {subnet_mask}")
 
         net_connect.save_config()
-
         net_connect.disconnect()
 
-        print(f"DHCP configuration applied successfully on {device}")
+        success_message = f"DHCP configuration applied successfully on {device}"
+        
+        return json.dumps({"message": success_message})
 
     except Exception as e:
-        print(f"Error applying DHCP configuration on {device}: {str(e)}")
+        return json.dumps({"error": f"Error applying DHCP configuration on {device}: {str(e)}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DHCP Configuration Script')
@@ -46,4 +47,5 @@ if __name__ == '__main__':
 
     for device in args.devices:
         interfaces = args.interfaces if args.interfaces else ['FastEthernet0/0', 'FastEthernet0/1']
-        apply_dhcp_config(device, args.username, args.password, args.network, args.subnet_mask, interfaces)
+        result = apply_dhcp_config(device, args.username, args.password, args.network, args.subnet_mask, interfaces)
+        print(result)  

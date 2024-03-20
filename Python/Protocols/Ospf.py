@@ -1,4 +1,5 @@
 import sys
+import json
 from netmiko import ConnectHandler
 
 def apply_ospf(router_ip, username, password, networks, interface, area):
@@ -35,7 +36,7 @@ def apply_ospf(router_ip, username, password, networks, interface, area):
 
         net_connect.disconnect()
     except:
-        print("OSPF configuration applied successfully.")
+        return json.dumps({"message":"OSPF configuration applied successfully."})
 
 def disable_ospf(router_ip, username, password):
     try:
@@ -61,7 +62,7 @@ def disable_ospf(router_ip, username, password):
 
         net_connect.disconnect()
     except:
-        print("OSPF configuration disabled successfully.")
+        return json.dumps({"message":"OSPF configuration disabled successfully."})
 
 if __name__ == "__main__":
     if len(sys.argv) >=7:
@@ -72,10 +73,13 @@ if __name__ == "__main__":
         networks = sys.argv[4]
         interface = sys.argv[5]
         area = sys.argv[6]
-        apply_ospf(router_ip, username, password, networks, interface, area)
+
+        result = apply_ospf(router_ip, username, password, networks, interface, area)
 
     else:
         router_ip = sys.argv[1]
         username = sys.argv[2]
         password = sys.argv[3]
-        disable_ospf(router_ip, username, password)
+        result = disable_ospf(router_ip, username, password)
+    
+    print(result)

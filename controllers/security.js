@@ -1,48 +1,63 @@
-const {exec} = require('child_process')
+const { exec } = require('child_process');
 
-function Accesses (device_ip, username, password, enable_password, allowed_ips, banned_ips) {
-    
-    //execute the Hardware.py using 'exec' from 'child_process' 
-    exec(`py ../Python/Security/Accesses.py ${device_ip} ${username} ${password} ${enable_password} ${allowed_ips} ${banned_ips}` , (error, stdout) => {
-        if (error) {
-            console.error(`exec error: ${error}`)
-            return
-        }
-          
-        const jsonData = JSON.parse(stdout)
-        return jsonData
+// Controller function to manage accesses
+function Accesses(device_ip, username, password, enable_password, allowed_ips, banned_ips) {
+    return new Promise((resolve, reject) => {
+        exec(`py C:\\Users\\haidar\\Desktop\\server\\Python\\Security\\Accesses.py ${device_ip} ${username} ${password} ${enable_password} ${allowed_ips} ${banned_ips}`, (error, stdout) => {
+            if (error) {
+                console.error(`exec error: ${error}`)
+                reject(error)
+            } else {
+                try {
+                    const jsonData = JSON.parse(stdout)
+                    resolve(jsonData)
+                } catch (parseError) {
+                    console.error(`Error parsing JSON: ${parseError}`)
+                    reject(parseError)
+                }
+            }
+        })
     })
-
 }
 
-function ApplySecurity (device_ip, username, password, enable_password) {
-    
-    //execute the Hardware.py using 'exec' from 'child_process' 
-    exec(`py ../Python/Security/ApplySecurity.py ${device_ip} ${username} ${password} ${enable_password}` , (error, stdout) => {
-        if (error) {
-            console.error(`exec error: ${error}`)
-            return
-        }
-          
-        const jsonData = JSON.parse(stdout)
-        return jsonData
+// Controller function to apply security settings
+function ApplySecurity(device_ip, username, password, enable_password) {
+    return new Promise((resolve, reject) => {
+        exec(`py C:\\Users\\haidar\\Desktop\\server\\Python\\Security\\ApplySecurity.py ${device_ip} ${username} ${password} ${enable_password}`, (error, stdout) => {
+            if (error) {
+                console.error(`exec error: ${error}`)
+                reject(error)
+            } else {
+                try {
+                    const jsonData = JSON.parse(stdout)
+                    resolve(jsonData)
+                } catch (parseError) {
+                    console.error(`Error parsing JSON: ${parseError}`)
+                    reject(parseError)
+                }
+            }
+        })
     })
-
 }
 
-function ConfigAudit (device_ip, username, password, enable_password) {
-    
-    //execute the Hardware.py using 'exec' from 'child_process' 
-    exec(`py ../Python/Security/ConfigAudit.py ${device_ip} ${username} ${password} ${enable_password}` , (error, stdout) => {
-        if (error) {
-            console.error(`exec error: ${error}`)
-            return
-        }
-          
-        const jsonData = JSON.parse(stdout)
-        return jsonData
+// Controller function to audit device configuration for security
+function ConfigAudit(device_ip, username, password, enable_password) {
+    return new Promise((resolve, reject) => {
+        exec(`py C:\\Users\\haidar\\Desktop\\server\\Python\\Security\\ConfigAudit.py ${device_ip} ${username} ${password} ${enable_password}`, (error, stdout) => {
+            if (error) {
+                console.error(`exec error: ${error}`)
+                reject(error)
+            } else {
+                try {
+                    const jsonData = JSON.parse(stdout)
+                    resolve(jsonData)
+                } catch (parseError) {
+                    console.error(`Error parsing JSON: ${parseError}`)
+                    reject(parseError)
+                }
+            }
+        })
     })
-
 }
 
-module.exports = {Accesses , ApplySecurity , ConfigAudit}
+module.exports = { Accesses, ApplySecurity, ConfigAudit }

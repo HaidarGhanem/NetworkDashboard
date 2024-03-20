@@ -6,42 +6,54 @@ const {Accesses , ApplySecurity , ConfigAudit} = require('../controllers/securit
 
 //---------------------------------- Security Panel -------------------------------
 
+//IPs accesses functionality
+//----------------------------------
+//------ GET security/access -------
+//----------------------------------
 router.get('/access', async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {router_ip , allowed_ips, banned_ips} = req.body
-        const result = await Accesses(router_ip, process.env.username , process.env.password , process.env.enablepass , allowed_ips, banned_ips)
-        res.json(result) // Return the result JSON response
+        const result = await Accesses(router_ip, process.env.username , process.env.password , allowed_ips, banned_ips)
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
+//Configurations audit functionality
+//----------------------------------
+//---- GET security/configaudit ----
+//----------------------------------
 router.get('/configaudit', async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {router_ip} = req.body
-        const result = await ConfigAudit(router_ip, process.env.username , process.env.password , process.env.enablepass)
-        res.json(result) // Return the result JSON response
+        const result = await ConfigAudit(router_ip, process.env.username , process.env.password)
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
+//apply the standard security
+//----------------------------------
+//--- GET security/applysecurity ---
+//----------------------------------
 router.get('/applysecurity', async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {router_ip} = req.body
-        const result = await ApplySecurity(router_ip, process.env.username , process.env.password , process.env.enablepass)
-        res.json(result) // Return the result JSON response
+        const result = await ApplySecurity(router_ip, process.env.username , process.env.password )
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 

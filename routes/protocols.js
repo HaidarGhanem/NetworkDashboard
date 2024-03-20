@@ -1,164 +1,191 @@
 require('dotenv').config()
-const data = require('../devices.json')
 const express= require ('express')
 const router = express.Router()
 
-//impporting the troublshooting controller
 const {Interfaces , DHCP , RIP1 ,RIP2 , EIGRP , OSPF , InterfacesStatus} = require ('../controllers/protocols')
 
 //-------------------------------------the Security functionality-----------------------------------
 
-//functionallity of checking interfaces
+//functionality of checking interfaces
+//----------------------------------
+//--- GET protocols/interfaces -----
+//----------------------------------
 router.get('/interfaces', async (req, res) => {
     try {
-        // Call the function that fetches data from the Python script
         const {ip} = req.body
         const result = await Interfaces(ip ,process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
+        res.json(result) 
     }
     catch (e) {
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
-//interfaces status
-router.get('/interfacStatus', async (req, res) => {
+//functionality of interfaces status
+//----------------------------------
+//- GET protocols/interfacesStatus -
+//----------------------------------
+router.get('/interfacesStatus', async (req, res) => {
     try {
-        // Call the function that fetches data from the Python script
         const { ip , interface , action} = req.body
         const result = await InterfacesStatus( ip , process.env.username , process.env.password , interface , action)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result) 
     }
     catch (e) {
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
-//DHCP functionallity
-router.get('/DHCP' , async (req,res)=>{
+//DHCP functionality
+//----------------------------------
+//------- GET protocols/dhcp -------
+//----------------------------------
+router.get('/dhcp' , async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip , interfaces , networks} = req.body
         const result = await DHCP(ip , interfaces , networks)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result) 
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }  
 })
 
-//RIP functionallity
-router.get('/RIP' , async (req,res)=>{
+//RIP functionality
+//----------------------------------
+//------- GET protocols/rip --------
+//----------------------------------
+router.get('/rip' , async (req,res)=>{
     const {version} = req.body
     if(version === '1'){
-    try{
-        // Call the function that fetches data from the Python script
-        const {ip , networks} = req.body
-        const result = await RIP1(ip , process.env.username , process.env.password , networks)
-        res.json(result) // Return the result JSON response
+        try{
+            const {ip , networks} = req.body
+            const result = await RIP1(ip , process.env.username , process.env.password , networks)
+            console.log(result)
+            res.json(result)
+        }
+        catch(e){
+            console.log(e)
+            res.status(500).send("An error occurred")
+        }
     }
-    catch(e){
-        console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
-    }}
     else{
         try{
-            // Call the function that fetches data from the Python script
             const {ip , networks} = req.body
             const result = await RIP2(ip , process.env.username , process.env.password , networks)
-            res.json(result) // Return the result JSON response
+            console.log(result)
+            res.json(result)
         }
         catch(e){
             console.log(e)
-            res.status(500).send("An error occurred") // Return an error response
+            res.status(500).send("An error occurred")
         }
     }
 })
 
-//disable RIP functionallity
-router.get('/RIPdisable' , async (req,res)=>{
+//disable RIP functionality
+//----------------------------------
+//----- GET protocols/ripdis -------
+//----------------------------------
+router.get('/ripdis' , async (req,res)=>{
     const {version} = req.body
     if(version === '1'){
-    try{
-        // Call the function that fetches data from the Python script
-        const {ip} = req.body
-        const result = await RIP1(ip , process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
-    }
-    catch(e){
-        console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
-    }}
-    else{
         try{
-            // Call the function that fetches data from the Python script
             const {ip} = req.body
-            const result = await RIP2(ip , process.env.username , process.env.password)
-            res.json(result) // Return the result JSON response
+            const result = await RIP1(ip , process.env.username , process.env.password)
+            console.log(result)
+            res.json(result)
         }
         catch(e){
             console.log(e)
-            res.status(500).send("An error occurred") // Return an error response
+            res.status(500).send("An error occurred")
+        }
+    }
+    else{
+        try{
+            const {ip} = req.body
+            const result = await RIP2(ip , process.env.username , process.env.password)
+            console.log(result)
+            res.json(result)
+        }
+        catch(e){
+            console.log(e)
+            res.status(500).send("An error occurred")
         }
     }
 })
 
-//EGRIP functionallity
+//EGRIP functionality
+//----------------------------------
+//----- GET protocols/eigrp --------
+//----------------------------------
 router.get('/EIGRP' , async (req,res)=>{
     try{
         // Call the function that fetches data from the Python script
         const {ip , networks , as_number} = req.body
-        const result = await EIGRP(ip , process.env.username , process.env.password , networks , as_number)
-        res.json(result) // Return the result JSON response
+        const result = await EIGRP( ip , process.env.username , process.env.password , networks , as_number )
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
-//disable EGRIP functionallity
-router.get('/EIGRPdisable' , async (req,res)=>{
+//disable EGRIP functionality
+//----------------------------------
+//---- GET protocols/eigrpdis ------
+//----------------------------------
+router.get('/eigrpdis' , async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip , as_number} = req.body
         const result = await EIGRP(ip , process.env.username , process.env.password , as_number)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
-//OSPF functionallity
-router.get('/OSPF' , async (req,res)=>{
+//OSPF functionality
+//----------------------------------
+//------ GET protocols/ospf --------
+//----------------------------------
+router.get('/ospf' , async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip , networks, interface, area} = req.body
         const result = await OSPF(ip , process.env.username , process.env.password , networks , interface, area)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result) 
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
-//disable OSPF functionallity
-router.get('/OSPFdisable' , async (req,res)=>{
+//disable OSPF functionality
+//----------------------------------
+//----- GET protocols/ospfdis ------
+//----------------------------------
+router.get('/ospfdis' , async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip} = req.body
         const result = await OSPF(ip , process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result) 
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 

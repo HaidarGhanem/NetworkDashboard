@@ -3,78 +3,92 @@ const data = require('../devices.json')
 const express= require ('express')
 const router = express.Router()
 
-//impporting the troublshooting controller
 const {Connectivity, Configurations , Interfaces , DHCP ,InterfacesStatus} = require ('../controllers/troubleshooting')
 
 //-------------------------------------the troubleshooting functionality-----------------------------------
 
 //functionallity of checking connectivity
+//----------------------------------
+// GET troubleshooting/connectivity 
+//----------------------------------
 router.get('/connectivity', async (req, res) => {
     try {
-        // Call the function that fetches data from the Python script
-        const { first_ip , second_ip} = req.body
-        const result = await Connectivity( first_ip , second_ip , process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
+        const { src_ip , dst_ip} = req.body
+        const result = await Connectivity( src_ip , dst_ip , process.env.username , process.env.password )
+        res.json(result) 
+        console.log(result)
     }
     catch (e) {
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
 //checking configurations
-router.get('/chekckconfig', async (req,res)=>{
+//----------------------------------
+// GET troubleshooting/checkconfig 
+//----------------------------------
+router.get('/checkconfig', async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip} = req.body
-        const result = await Configurations(ip , process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
+        const result = await Configurations( ip , process.env.username , process.env.password )
+        res.json(result)
+        console.log(result) 
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
 //check interfaces
+//----------------------------------
+// GET troubleshooting/interfaces -- 
+//----------------------------------
 router.get('/interfaces', async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip } = req.body
-        const result = await Interfaces(ip , process.env.username , process.env.password)
-        res.json(result) // Return the result JSON response
+        const result = await Interfaces( ip , process.env.username , process.env.password )
+        console.log(result) 
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }
 })
 
 //interfaces status
-router.get('/interfacStatus', async (req, res) => {
+//----------------------------------
+// GET troubleshooting/interfaceStatus
+//----------------------------------
+router.get('/interfaceStatus', async (req, res) => {
     try {
-        // Call the function that fetches data from the Python script
         const { ip , interface , action} = req.body
         const result = await InterfacesStatus( ip , process.env.username , process.env.password , interface , action)
-        res.json(result) // Return the result JSON response
+        console.log(result) 
+        res.json(result)
     }
     catch (e) {
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
 //DHCP functionallity
-router.get('/DHCP' , async (req,res)=>{
+//----------------------------------
+// GET troubleshooting/dhcp
+//----------------------------------
+router.get('/dhcp' , async (req,res)=>{
     try{
-        // Call the function that fetches data from the Python script
         const {ip , interfaces , networks} = req.body
         const result = await DHCP(ip , interfaces , networks)
-        res.json(result) // Return the result JSON response
+        console.log(result)
+        res.json(result)
     }
     catch(e){
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred")
     }  
 })
 

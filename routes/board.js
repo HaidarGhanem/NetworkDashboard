@@ -1,70 +1,65 @@
 require('dotenv').config()
-// const path = require('../devices.json')
-// const {extractData} = require('../extraction')
 const express= require ('express')
 const router = express.Router()
 
 
 //impporting the board controller
 const {basicGNS , basicInfo , basicInterfaces , basicConnectivity} = require ('../controllers/board')
-const {Configurations} = require('./controllers/troubleshooting')
+const {Configurations} = require('../controllers/troubleshooting')
 
 //-------------------------------------the dashboard functionality-----------------------------------
 
 //fetch the basic data from the GNS3
+//----------------------------------
+//----------- GET /basic -----------
+//----------------------------------
 router.get('/basic', async (req, res) => {
     try {
-        // Call the function that fetches data from the Python script
         const result = await basicGNS()
-        res.json(result) // Return the result JSON response
+        res.json(result)
     }
     catch (e) {
         console.log(e)
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
 //fetch the basic hardware info for the dashboard for the first device
+//----------------------------------
+//--------- GET /basicInfo ---------
+//----------------------------------
 router.get('/basicInfo', async (req,res)=>{
     try {
-        // Call the function that fetches data from the Python script
-        const resultHardware = await basicInfo('192.168.192.132','admin','admin')
-        const resultInterfaces = await basicInterfaces('192.168.192.132','admin','admin')
-        res.json(resultHardware) // Return the result JSON response
-        res.json(resultInterfaces) // Return the result JSON response
+        const resultHardware = await basicInfo('192.168.192.131','admin','admin')
+        res.json(resultHardware)
+        console.log(resultHardware)
+
+        const resultInterfaces = await basicInterfaces('192.168.192.131','admin','admin')
+        res.json(resultInterfaces)
+        console.log(resultInterfaces)
     }
     catch (e) {
         console.log(e);
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
 //return and input for checkConnectivity section
+//----------------------------------
+//----- GET /basicConnectivity -----
+//----------------------------------
 router.get('/basicConnectivity', async (req,res)=>{
     try {
-        // Call the function that fetches data from the Python script
-        const {first_ip , second_ip} = req.body
-        const resultConnectivity = await basicConnectivity(first_ip , second_ip , process.env.username , process.env.password)
-        res.json(resultConnectivity) // Return the result JSON response
+        const {src_ip , dst_ip} = req.body
+        const resultConnectivity = await basicConnectivity(src_ip , dst_ip , process.env.username , process.env.password)
+        console.log(resultConnectivity)
+        res.json(resultConnectivity) 
     }
     catch (e) {
         console.log(e);
-        res.status(500).send("An error occurred") // Return an error response
+        res.status(500).send("An error occurred") 
     }
 })
 
-
-//duration configCheck
-router.get('/' , async(req,res)=>{
-    try {
-        // Call the function that fetches data from the Python script
-        const resultConfiguration = await Configurations('192.168.192.131','admin','admin','192.168.1.2','admin','admin','192.168.2.3','admin','admin')
-        res.json(resultConfiguration) // Return the result JSON response
-    }
-    catch (e) {
-        console.log(e);
-        res.status(500).send("An error occurred") // Return an error response
-    }
-})
 
 module.exports = router

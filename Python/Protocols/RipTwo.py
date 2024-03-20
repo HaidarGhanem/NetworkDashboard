@@ -1,4 +1,5 @@
 import sys
+import json
 from netmiko import ConnectHandler
 
 def apply_rip(router_ip, username, password, networks):
@@ -28,7 +29,7 @@ def apply_rip(router_ip, username, password, networks):
 
         net_connect.disconnect()
     except :
-        print("RIP configuration applied successfully.")
+        return json.dumps({"message": "RIP configuration applied successfully."})
 
 def disable_rip(router_ip, username, password):
     try:
@@ -52,7 +53,7 @@ def disable_rip(router_ip, username, password):
 
         net_connect.disconnect()
     except :
-        print("RIP configuration disabled successfully.")
+        return json.dumps({"message": "RIP configuration disabled successfully."})
 
 if __name__ == "__main__":
     if (len(sys.argv) < 4) or (len(sys.argv) > 5):
@@ -66,7 +67,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 5:
         networks = sys.argv[4]
         
-        apply_rip(router_ip, username, password, networks)
+        result = apply_rip(router_ip, username, password, networks)
     else:
     # Disable RIP
-        disable_rip(router_ip, username, password)
+        result = disable_rip(router_ip, username, password)
+
+    print(result)

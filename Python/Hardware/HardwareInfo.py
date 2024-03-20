@@ -1,4 +1,5 @@
 import sys
+import json
 from netmiko import ConnectHandler
 
 def get_hardware_info(router_ip, username, password):
@@ -44,6 +45,9 @@ if __name__ == "__main__":
 
     device_info = get_hardware_info(router_ip, username, password)
 
-    print("Hardware Information:")
-    print(device_info["Hardware"])
-    print("\nMemory Usage Percentage: {}%".format(device_info["Memory"]))
+    output_json = {
+        "Hardware Information": device_info["Hardware"],
+        "Memory Usage Percentage": "{}%".format(device_info["Memory"])
+    }
+
+    print(json.dumps(output_json, indent=4))
