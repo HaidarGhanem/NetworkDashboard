@@ -4,22 +4,22 @@ GET http://localhost:3000/basicConnectivity
 
 GET http://localhost:3000/hardware/info
 
-GET http://localhost:3000protocols/interfaces
-GET http://localhost:3000protocols/interfacesStatus
-GET http://localhost:3000protocols/dhcp
-GET http://localhost:3000protocols/rip
-GET http://localhost:3000protocols/ripdis
-GET http://localhost:3000protocols/eigrp
-GET http://localhost:3000protocols/eigrpdis
-GET http://localhost:3000protocols/ospf
-GET http://localhost:3000protocols/ospfdis
+GET http://localhost:3000/protocols/interfaces
+GET http://localhost:3000/protocols/interfacesStatus
+GET http://localhost:3000/protocols/dhcp
+GET http://localhost:3000/protocols/rip
+GET http://localhost:3000/protocols/ripdis
+GET http://localhost:3000/protocols/eigrp
+GET http://localhost:3000/protocols/eigrpdis
+GET http://localhost:3000/protocols/ospf
+GET http://localhost:3000/protocols/ospfdis
 
-GET http://localhost:3000security/access 
-GET http://localhost:3000security/configaudit
-GET http://localhost:3000security/applysecurity
+GET http://localhost:3000/security/access 
+GET http://localhost:3000/security/configaudit
+GET http://localhost:3000/security/applysecurity
 
-GET http://localhost:3000troubleshooting/connectivity 
-GET http://localhost:3000troubleshooting/checkconfig 
-GET http://localhost:3000troubleshooting/interfaces
-GET http://localhost:3000troubleshooting/interfaceStatus
-GET http://localhost:3000troubleshooting/dhcp
+GET http://localhost:3000/troubleshooting/connectivity 
+GET http://localhost:3000/troubleshooting/checkconfig 
+GET http://localhost:3000/troubleshooting/interfaces
+GET http://localhost:3000/troubleshooting/interfaceStatus
+GET http://localhost:3000/troubleshooting/dhcp
