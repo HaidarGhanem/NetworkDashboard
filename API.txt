@@ -1,25 +1,27 @@
+POST http://localhost:3000/welcome/register
+GET http://localhost:3000/welcome/login
 GET http://localhost:3000/dashboard/basic
-GET http://localhost:3000/basicInfo
-GET http://localhost:3000/basicConnectivity
+GET http://localhost:3000/dashboard/basicInfo
+GET http://localhost:3000/dashboard/basicConnectivity
 
-GET http://localhost:3000/hardware/info
+GET http://localhost:3000/dashboard/hardware/info
 
-GET http://localhost:3000/protocols/interfaces
-GET http://localhost:3000/protocols/interfacesStatus
-GET http://localhost:3000/protocols/dhcp
-GET http://localhost:3000/protocols/rip
-GET http://localhost:3000/protocols/ripdis
-GET http://localhost:3000/protocols/eigrp
-GET http://localhost:3000/protocols/eigrpdis
-GET http://localhost:3000/protocols/ospf
-GET http://localhost:3000/protocols/ospfdis
+GET http://localhost:3000/dashboard/protocols/interfaces
+GET http://localhost:3000/dashboard/protocols/interfacesStatus
+GET http://localhost:3000/dashboard/protocols/dhcp
+GET http://localhost:3000/dashboard/protocols/rip
+GET http://localhost:3000/dashboard/protocols/ripdis
+GET http://localhost:3000/dashboard/protocols/eigrp
+GET http://localhost:3000/dashboard/protocols/eigrpdis
+GET http://localhost:3000/dashboard/protocols/ospf
+GET http://localhost:3000/dashboard/protocols/ospfdis
 
-GET http://localhost:3000/security/access 
-GET http://localhost:3000/security/configaudit
-GET http://localhost:3000/security/applysecurity
+GET http://localhost:3000/dashboard/security/access 
+GET http://localhost:3000/dashboard/security/configaudit
+GET http://localhost:3000/dashboard/security/applysecurity
 
-GET http://localhost:3000/troubleshooting/connectivity 
-GET http://localhost:3000/troubleshooting/checkconfig 
-GET http://localhost:3000/troubleshooting/interfaces
-GET http://localhost:3000/troubleshooting/interfaceStatus
-GET http://localhost:3000/troubleshooting/dhcp
+GET http://localhost:3000/dashboard/troubleshooting/connectivity 
+GET http://localhost:3000/dashboard/troubleshooting/checkconfig 
+GET http://localhost:3000/dashboard/troubleshooting/interfaces
+GET http://localhost:3000/dashboard/troubleshooting/interfaceStatus
+GET http://localhost:3000/dashboard/troubleshooting/dhcp

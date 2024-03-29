@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express= require ('express')
 const router = express.Router()
+const { authMiddleware } = require ('../config/jwt')
 
 const {Interfaces , DHCP , RIP1 ,RIP2 , EIGRP , OSPF , InterfacesStatus} = require ('../controllers/protocols')
 
@@ -10,7 +11,7 @@ const {Interfaces , DHCP , RIP1 ,RIP2 , EIGRP , OSPF , InterfacesStatus} = requi
 //----------------------------------
 //--- GET protocols/interfaces -----
 //----------------------------------
-router.get('/interfaces', async (req, res) => {
+router.get('/interfaces',authMiddleware, async (req, res) => {
     try {
         const {ip} = req.body
         const result = await Interfaces(ip ,process.env.username , process.env.password)
@@ -26,7 +27,7 @@ router.get('/interfaces', async (req, res) => {
 //----------------------------------
 //- GET protocols/interfacesStatus -
 //----------------------------------
-router.get('/interfacesStatus', async (req, res) => {
+router.get('/interfacesStatus',authMiddleware, async (req, res) => {
     try {
         const { ip , interface , action} = req.body
         const result = await InterfacesStatus( ip , process.env.username , process.env.password , interface , action)
@@ -43,7 +44,7 @@ router.get('/interfacesStatus', async (req, res) => {
 //----------------------------------
 //------- GET protocols/dhcp -------
 //----------------------------------
-router.get('/dhcp' , async (req,res)=>{
+router.get('/dhcp' ,authMiddleware, async (req,res)=>{
     try{
         const {ip , interfaces , networks} = req.body
         const result = await DHCP(ip , interfaces , networks)
@@ -60,7 +61,7 @@ router.get('/dhcp' , async (req,res)=>{
 //----------------------------------
 //------- GET protocols/rip --------
 //----------------------------------
-router.get('/rip' , async (req,res)=>{
+router.get('/rip' ,authMiddleware, async (req,res)=>{
     const {version} = req.body
     if(version === '1'){
         try{
@@ -92,7 +93,7 @@ router.get('/rip' , async (req,res)=>{
 //----------------------------------
 //----- GET protocols/ripdis -------
 //----------------------------------
-router.get('/ripdis' , async (req,res)=>{
+router.get('/ripdis' ,authMiddleware, async (req,res)=>{
     const {version} = req.body
     if(version === '1'){
         try{
@@ -124,7 +125,7 @@ router.get('/ripdis' , async (req,res)=>{
 //----------------------------------
 //----- GET protocols/eigrp --------
 //----------------------------------
-router.get('/EIGRP' , async (req,res)=>{
+router.get('/EIGRP' ,authMiddleware, async (req,res)=>{
     try{
         // Call the function that fetches data from the Python script
         const {ip , networks , as_number} = req.body
@@ -142,7 +143,7 @@ router.get('/EIGRP' , async (req,res)=>{
 //----------------------------------
 //---- GET protocols/eigrpdis ------
 //----------------------------------
-router.get('/eigrpdis' , async (req,res)=>{
+router.get('/eigrpdis' ,authMiddleware, async (req,res)=>{
     try{
         const {ip , as_number} = req.body
         const result = await EIGRP(ip , process.env.username , process.env.password , as_number)
@@ -159,7 +160,7 @@ router.get('/eigrpdis' , async (req,res)=>{
 //----------------------------------
 //------ GET protocols/ospf --------
 //----------------------------------
-router.get('/ospf' , async (req,res)=>{
+router.get('/ospf' ,authMiddleware, async (req,res)=>{
     try{
         const {ip , networks, interface, area} = req.body
         const result = await OSPF(ip , process.env.username , process.env.password , networks , interface, area)
@@ -176,7 +177,7 @@ router.get('/ospf' , async (req,res)=>{
 //----------------------------------
 //----- GET protocols/ospfdis ------
 //----------------------------------
-router.get('/ospfdis' , async (req,res)=>{
+router.get('/ospfdis' ,authMiddleware, async (req,res)=>{
     try{
         const {ip} = req.body
         const result = await OSPF(ip , process.env.username , process.env.password)

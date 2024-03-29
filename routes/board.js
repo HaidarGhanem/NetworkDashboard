@@ -1,11 +1,10 @@
 require('dotenv').config()
 const express= require ('express')
 const router = express.Router()
-
+const { authMiddleware } = require ('../config/jwt')
 
 //impporting the board controller
 const {basicGNS , basicInfo , basicInterfaces , basicConnectivity} = require ('../controllers/board')
-const {Configurations} = require('../controllers/troubleshooting')
 
 //-------------------------------------the dashboard functionality-----------------------------------
 
@@ -13,7 +12,7 @@ const {Configurations} = require('../controllers/troubleshooting')
 //----------------------------------
 //----------- GET /basic -----------
 //----------------------------------
-router.get('/basic', async (req, res) => {
+router.get('/basic',authMiddleware, async (req, res) => {
     try {
         const result = await basicGNS()
         res.json(result)
@@ -28,7 +27,7 @@ router.get('/basic', async (req, res) => {
 //----------------------------------
 //--------- GET /basicInfo ---------
 //----------------------------------
-router.get('/basicInfo', async (req,res)=>{
+router.get('/basicInfo',authMiddleware, async (req,res)=>{
     try {
         const resultHardware = await basicInfo('192.168.192.131','admin','admin')
         res.json(resultHardware)
@@ -48,7 +47,7 @@ router.get('/basicInfo', async (req,res)=>{
 //----------------------------------
 //----- GET /basicConnectivity -----
 //----------------------------------
-router.get('/basicConnectivity', async (req,res)=>{
+router.get('/basicConnectivity',authMiddleware, async (req,res)=>{
     try {
         const {src_ip , dst_ip} = req.body
         const resultConnectivity = await basicConnectivity(src_ip , dst_ip , process.env.username , process.env.password)

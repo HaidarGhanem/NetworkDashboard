@@ -2,6 +2,7 @@ require('dotenv').config()
 const data = require('../devices.json')
 const express= require ('express')
 const router = express.Router()
+const { authMiddleware } = require ('../config/jwt')
 
 const {Connectivity, Configurations , Interfaces , DHCP ,InterfacesStatus} = require ('../controllers/troubleshooting')
 
@@ -11,7 +12,7 @@ const {Connectivity, Configurations , Interfaces , DHCP ,InterfacesStatus} = req
 //----------------------------------
 // GET troubleshooting/connectivity 
 //----------------------------------
-router.get('/connectivity', async (req, res) => {
+router.get('/connectivity',authMiddleware, async (req, res) => {
     try {
         const { src_ip , dst_ip} = req.body
         const result = await Connectivity( src_ip , dst_ip , process.env.username , process.env.password )
@@ -28,7 +29,7 @@ router.get('/connectivity', async (req, res) => {
 //----------------------------------
 // GET troubleshooting/checkconfig 
 //----------------------------------
-router.get('/checkconfig', async (req,res)=>{
+router.get('/checkconfig',authMiddleware, async (req,res)=>{
     try{
         const {ip} = req.body
         const result = await Configurations( ip , process.env.username , process.env.password )
@@ -45,7 +46,7 @@ router.get('/checkconfig', async (req,res)=>{
 //----------------------------------
 // GET troubleshooting/interfaces -- 
 //----------------------------------
-router.get('/interfaces', async (req,res)=>{
+router.get('/interfaces',authMiddleware, async (req,res)=>{
     try{
         const {ip } = req.body
         const result = await Interfaces( ip , process.env.username , process.env.password )
@@ -62,7 +63,7 @@ router.get('/interfaces', async (req,res)=>{
 //----------------------------------
 // GET troubleshooting/interfaceStatus
 //----------------------------------
-router.get('/interfaceStatus', async (req, res) => {
+router.get('/interfaceStatus',authMiddleware, async (req, res) => {
     try {
         const { ip , interface , action} = req.body
         const result = await InterfacesStatus( ip , process.env.username , process.env.password , interface , action)
@@ -79,7 +80,7 @@ router.get('/interfaceStatus', async (req, res) => {
 //----------------------------------
 // GET troubleshooting/dhcp
 //----------------------------------
-router.get('/dhcp' , async (req,res)=>{
+router.get('/dhcp' ,authMiddleware, async (req,res)=>{
     try{
         const {ip , interfaces , networks} = req.body
         const result = await DHCP(ip , interfaces , networks)
