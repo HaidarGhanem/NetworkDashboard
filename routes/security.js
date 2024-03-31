@@ -2,7 +2,6 @@ require('dotenv').config()
 const data = require('../devices.json')
 const express= require('express')
 const router = express.Router()
-const { authMiddleware } = require ('../config/jwt')
 const {Accesses , ApplySecurity , ConfigAudit} = require('../controllers/security')
 
 //---------------------------------- Security Panel -------------------------------
@@ -11,7 +10,7 @@ const {Accesses , ApplySecurity , ConfigAudit} = require('../controllers/securit
 //----------------------------------
 //------ GET security/access -------
 //----------------------------------
-router.get('/access',authMiddleware, async (req,res)=>{
+router.get('/access', async (req,res)=>{
     try{
         const {router_ip , allowed_ips, banned_ips} = req.body
         const result = await Accesses(router_ip, process.env.username , process.env.password , allowed_ips, banned_ips)
@@ -28,7 +27,7 @@ router.get('/access',authMiddleware, async (req,res)=>{
 //----------------------------------
 //---- GET security/configaudit ----
 //----------------------------------
-router.get('/configaudit',authMiddleware, async (req,res)=>{
+router.get('/configaudit', async (req,res)=>{
     try{
         const {router_ip} = req.body
         const result = await ConfigAudit(router_ip, process.env.username , process.env.password)
@@ -45,7 +44,7 @@ router.get('/configaudit',authMiddleware, async (req,res)=>{
 //----------------------------------
 //--- GET security/applysecurity ---
 //----------------------------------
-router.get('/applysecurity',authMiddleware, async (req,res)=>{
+router.get('/applysecurity', async (req,res)=>{
     try{
         const {router_ip} = req.body
         const result = await ApplySecurity(router_ip, process.env.username , process.env.password )

@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const router = express.Router()
 const Info  = require('../controllers/hardware')
-const { authMiddleware } = require ('../config/jwt')
 
 //----------------------------------------Hardware Panel-----------------------------------
 
@@ -11,7 +10,7 @@ const { authMiddleware } = require ('../config/jwt')
 //----------------------------------
 //------- GET /hardware/info -------
 //----------------------------------
-router.get('/info',authMiddleware, async (req, res) => {
+router.get('/info', async (req, res) => {
     try {
         const {ip} = req.body
         const result = await Info( ip , process.env.username , process.env.password)
